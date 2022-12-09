@@ -13,12 +13,13 @@ steps:
 - task: AzureCLI@2
   displayName: Docker Build & Push
   inputs:
-    azureSubscription: 'AzureCSP_azure_keadilanrak'
+    azureSubscription: 'AzureCSP_azure_keadilanrak(ad094228-d66a-4aad-acfb-3606b11366a3)'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
       docker build -t $(acr_name).azurecr.io/webapp:$(tag) app-dotnet
-      az acr login -n $(acr_name)
+            az acr login -n $(acr_name)
+            docker push $(acr_name).azurecr.io/webapp:$(tag)
       docker push $(acr_name).azurecr.io/webapp:$(tag)
       
 - task: qetza.replacetokens.replacetokens-task.replacetokens@3
@@ -38,11 +39,12 @@ steps:
 
 - script: cat 02_kubernetes_aks/app-deploy.yaml
 
+
 - task: Kubernetes@1
   displayName: Kubernetes Deploy
   inputs:
     connectionType: 'Azure Resource Manager'
-    azureSubscriptionEndpoint: 'aks-spn-ca'
+    azureSubscriptionEndpoint: 'aksspn'
     azureResourceGroup: 'improvinginfra'
     kubernetesCluster: 'aks-cluster'
     namespace: 'default'
