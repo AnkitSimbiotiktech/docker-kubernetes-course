@@ -15,8 +15,8 @@ spec:
       containers:
       - name: webapp
         # image: aksclusteracr.azurecr.io/webapp:1.0.2
-        image: houssemdocker/webapp:111
-        # image: ACR_NAME/DOCKER_IMAGE:TAG
+        #  image: houssemdocker/webapp:111
+        image: improvinginfraacr/webapp:__tag__
         # image: __ACR_NAME__.azurecr.io/__DOCKER_IMAGE__:__TAG__
         ports:
         - containerPort: 80
