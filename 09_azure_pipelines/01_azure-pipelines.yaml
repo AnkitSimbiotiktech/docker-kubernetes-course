@@ -10,17 +10,15 @@ variables:
 
 steps:
 
-- task: AzureCLI@2
-  displayName: Docker Build & Push
+- task: Docker@2
   inputs:
-    azureSubscription: 'AzureCSP_azure_keadilanrak(ad094228-d66a-4aad-acfb-3606b11366a3)'
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
-      docker build -t $(acr_name).azurecr.io/webapp:latest app-dotnet
-      az acr login -n $(acr_name)
-      docker push $(acr_name).azurecr.io/webapp:latest
-      docker push $(acr_name).azurecr.io/webapp:latest
+    containerRegistry: 'azureacr'
+    repository: 'improvinginfraacr'
+    command: 'buildAndPush'
+    Dockerfile: 'app-dotnet/Dockerfile'
+    buildContext: 
+
+
       
 
 
