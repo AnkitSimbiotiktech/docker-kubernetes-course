@@ -6,7 +6,7 @@ pool:
 
 variables:
   acr_name: improvinginfraacr
-  tag: 1.0.0-$(Build.BuildId)
+  # tag: 1.0.0-$(Build.BuildId)
 
 steps:
 
@@ -17,25 +17,12 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      docker build -t $(acr_name).azurecr.io/webapp:$(tag) app-dotnet
-            az acr login -n $(acr_name)
-            docker push $(acr_name).azurecr.io/webapp:$(tag)
-      docker push $(acr_name).azurecr.io/webapp:$(tag)
+      docker build -t $(acr_name).azurecr.io/webapp:latest app-dotnet
+      az acr login -n $(acr_name)
+      docker push $(acr_name).azurecr.io/webapp:latest
+      docker push $(acr_name).azurecr.io/webapp:latest
       
-- task: qetza.replacetokens.replacetokens-task.replacetokens@3
-  displayName: 'Replace Image TAG'
-  inputs:
-    rootDirectory: '02_kubernetes_aks'
-    targetFiles: 'app-deploy.yaml'
-    encoding: 'auto'
-    writeBOM: true
-    actionOnMissing: 'warn'
-    keepToken: false
-    tokenPrefix: '__'
-    tokenSuffix: '__'
-    useLegacyPattern: false
-    enableTransforms: false
-    enableTelemetry: true
+
 
 - script: cat 02_kubernetes_aks/app-deploy.yaml
 
