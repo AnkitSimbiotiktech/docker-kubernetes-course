@@ -11,6 +11,7 @@ variables:
 steps:
 
 - task: Docker@2
+  displayName: Docker Build and Push
   inputs:
     containerRegistry: 'azureacr'
     repository: 'improvinginfraacr'
@@ -19,22 +20,16 @@ steps:
     buildContext: 
 
 
-      
-
-
 - script: cat 02_kubernetes_aks/app-deploy.yaml
-
-
 - task: Kubernetes@1
-  displayName: Kubernetes Deploy
+  displayName: Deploy to K8s
   inputs:
-    connectionType: 'Azure Resource Manager'
-    azureSubscriptionEndpoint: 'aks'
-    azureResourceGroup: 'improvinginfra'
-    kubernetesCluster: 'aks-cluster'
+    connectionType: 'Kubernetes Service Connection'
+    kubernetesServiceEndpoint: 'aksspn'
     namespace: 'default'
     command: 'apply'
     useConfigurationFile: true
     configuration: '02_kubernetes_aks'
     secretType: 'dockerRegistry'
     containerRegistryType: 'Azure Container Registry'
+
